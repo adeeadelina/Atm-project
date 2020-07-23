@@ -1,13 +1,17 @@
 package com.example.Atmproject;
 
 public class MailNotification {
-    public String messageToSend;
+    private final String messageToSend;
 
     public MailNotification(String message) {
-        this.messageToSend = message;
+        this.messageToSend = "ATM machine" + "\n" + "To: fillMeUpPlease@superbancomat.com" + "\n" + message;
     }
 
-    public void sendMail() {
-        System.out.println("ATM machine" + "\n" + "To: fillMeUpPlease@superbancomat.com" + "\n" + messageToSend);
+    public String getMessageToSend() {
+        return messageToSend;
     }
+
+//    public String toString() {
+//        return "ATM machine" + "\n" + "To: fillMeUpPlease@superbancomat.com" + "\n" + messageToSend;
+//    }
 }

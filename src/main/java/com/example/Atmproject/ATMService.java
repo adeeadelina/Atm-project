@@ -1,5 +1,6 @@
 package com.example.Atmproject;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeMap;
 
@@ -8,15 +9,17 @@ public interface ATMService {
 
     boolean isAvailable(int amount);
 
+    void fillATM();
+
     int calculateBalance();
 
     void updateBalance(int nrOfBills, int typeOfBills);
 
-    void verifyBalance();
+    ArrayList<MailNotification> verifyBalance();
 
-    void verify100WarningCase();
+    MailNotification verify100WarningCase();
 
-    void verify100CriticalCase();
+    MailNotification verify100CriticalCase();
 
-    void verify50WarningCase();
+    MailNotification verify50WarningCase();
 }
