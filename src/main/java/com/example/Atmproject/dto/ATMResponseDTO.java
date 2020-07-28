@@ -1,4 +1,4 @@
-package com.example.Atmproject;
+package com.example.Atmproject.dto;
 
 import java.util.Map;
 import java.util.Objects;

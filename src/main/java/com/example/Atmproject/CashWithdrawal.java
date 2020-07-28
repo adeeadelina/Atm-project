@@ -1,5 +1,9 @@
 package com.example.Atmproject;
 
+import com.example.Atmproject.dto.ATMResponseDTO;
+import com.example.Atmproject.exception.ImpossibleSplitException;
+import com.example.Atmproject.exception.IncorrectAmountException;
+import com.example.Atmproject.exception.NotEnoughMoneyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +24,21 @@ public class CashWithdrawal {
 
     public ATMResponseDTO withdraw(int amount) {
         if (!isAmountCorrect(amount)) {
-            return new ATMResponseDTO("Transaction denied", null);
+            try {
+                throw new IncorrectAmountException();
+            } catch (IncorrectAmountException e) {
+                e.printStackTrace();
+                return new ATMResponseDTO("Transaction denied", null);
+
+            }
         } else if (!atmMachine.isAvailable(amount)) {
-            return new ATMResponseDTO("Transaction denied", null);
+            try {
+                throw new NotEnoughMoneyException();
+            } catch (NotEnoughMoneyException e) {
+                e.printStackTrace();
+                return new ATMResponseDTO("Transaction denied", null);
+
+            }
         }
         TreeMap<Integer, Integer> billsReturned = new TreeMap<>();
         int nrOfBills = 0, typeOfBills;
@@ -44,7 +60,13 @@ public class CashWithdrawal {
             // when the split into bills cannot be done
             // Obs! It hardly gets here
             if (nrOfBills == 0) {
-                return new ATMResponseDTO("Transaction denied", null);
+                try {
+                    throw new ImpossibleSplitException();
+                } catch (ImpossibleSplitException e) {
+                    e.printStackTrace();
+                    return new ATMResponseDTO("Transaction denied", null);
+
+                }
             }
             if (atmMachine.verifyBalance() != null) {
                 updateMailList(atmMachine.verifyBalance());
