@@ -1,7 +1,5 @@
 package com.example.Atmproject.dto;
 
-import com.example.Atmproject.util.Status;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -10,11 +8,9 @@ public class ATMResponseDTO {
 
     private final TreeMap<String, Integer> bills;
     private final String responseMessage;
-    private final Status status;
 
-    public ATMResponseDTO(Status status, String responseMessage, TreeMap<String, Integer> bills) {
+    public ATMResponseDTO(String responseMessage, TreeMap<String, Integer> bills) {
         this.responseMessage = responseMessage;
-        this.status = status;
         if (bills == null) {
             this.bills = new TreeMap<>();
         } else {
@@ -50,10 +46,6 @@ public class ATMResponseDTO {
 
     public TreeMap<String, Integer> getBills() {
         return bills;
-    }
-
-    public Status getStatus() {
-        return status;
     }
 
     @Override

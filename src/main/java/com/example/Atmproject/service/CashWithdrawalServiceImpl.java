@@ -5,7 +5,6 @@ import com.example.Atmproject.exception.ImpossibleSplitException;
 import com.example.Atmproject.exception.IncorrectAmountException;
 import com.example.Atmproject.exception.NotEnoughMoneyException;
 import com.example.Atmproject.util.MailNotification;
-import com.example.Atmproject.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +56,7 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
 
         }
 
-        return new ATMResponseDTO(Status.ACCEPTED, "Transaction approved", ATMResponseDTO.transformBillsToString(billsReturned));
+        return new ATMResponseDTO("Transaction approved", ATMResponseDTO.transformBillsToString(billsReturned));
     }
 
     public void updateMailList(ArrayList<MailNotification> mails) {

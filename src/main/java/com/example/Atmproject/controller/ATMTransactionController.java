@@ -34,9 +34,24 @@ public class ATMTransactionController {
         // TODO I don't have enough money (withdraw doesn't return 'Total
         // number of bills, then ask for money from Diana, then Dragos.
         // else case returns 'Cannot withdraw money'.
+        try {
+            ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch(IncorrectAmountException incorrectAmountException) {
+            throw new IncorrectAmountException();
+        } catch (Exception e1) {
+            try {
+                ATMResponseDTO response = dragosClient.cashWithdraw(amount);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (Exception e2) {
+                try {
+                    return new ResponseEntity<>(dianaClient.cashWithdraw(amount), HttpStatus.OK);
+                } catch (Exception e3) {
+                    return new ResponseEntity<>(cashWithdrawalService.withdraw(amount), HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        }
 
-        ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
-        return new ResponseEntity<>(response, HttpStatus.OK);
         // TODO could work with status code
         // System.out.println(dragosClient.isOnline().getStatusCodeValue()) ;
 
