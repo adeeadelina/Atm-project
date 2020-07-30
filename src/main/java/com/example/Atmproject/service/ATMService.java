@@ -1,4 +1,6 @@
-package com.example.Atmproject;
+package com.example.Atmproject.service;
+
+import com.example.Atmproject.util.MailNotification;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,8 +12,6 @@ public interface ATMService {
     boolean isAvailable(int amount);
 
     void fillATM();
-
-    int calculateBalance();
 
     void updateBalance(int nrOfBills, int typeOfBills);
 

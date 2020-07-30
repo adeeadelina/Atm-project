@@ -1,12 +1,18 @@
-package com.example.Atmproject;
+package com.example.Atmproject.service;
 
+import com.example.Atmproject.util.MailNotification;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class ATMServiceImpl implements ATMService {
+    @Autowired
+    private ATMCheckBalance atmCheckBalance;
+
     // key - type of bill, value - how many bills of that type
     public ATMServiceImpl() {
         this.fillATM();
@@ -21,15 +27,7 @@ public class ATMServiceImpl implements ATMService {
     }
 
     public boolean isAvailable(int amount) {
-        return amount <= calculateBalance();
-    }
-
-    public int calculateBalance() {
-        int currentBalance = 0;
-        for (Map.Entry<Integer, Integer> entry : balance.entrySet()) {
-            currentBalance += entry.getKey() * entry.getValue();
-        }
-        return currentBalance;
+        return amount <= atmCheckBalance.calculateBalance();
     }
 
     public void updateBalance(int nrOfBills, int typeOfBills) {
@@ -55,6 +53,7 @@ public class ATMServiceImpl implements ATMService {
         if (balance.containsKey(50)) {
             listToReturn.add(verify50WarningCase());
         }
+        listToReturn.removeIf(Objects::isNull);
         return listToReturn;
     }
 

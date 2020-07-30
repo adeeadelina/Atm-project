@@ -1,9 +1,11 @@
-package com.example.Atmproject;
+package com.example.Atmproject.service;
 
 import com.example.Atmproject.dto.ATMResponseDTO;
 import com.example.Atmproject.exception.ImpossibleSplitException;
 import com.example.Atmproject.exception.IncorrectAmountException;
 import com.example.Atmproject.exception.NotEnoughMoneyException;
+import com.example.Atmproject.util.MailNotification;
+import com.example.Atmproject.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Service
-public class CashWithdrawal {
+public class CashWithdrawalServiceImpl implements CashWithdrawalService {
     @Autowired
     private ATMService atmMachine;
 
@@ -22,23 +24,11 @@ public class CashWithdrawal {
         return mailList;
     }
 
-    public ATMResponseDTO withdraw(int amount) {
+    public ATMResponseDTO withdraw(int amount) throws IncorrectAmountException, NotEnoughMoneyException, ImpossibleSplitException {
         if (!isAmountCorrect(amount)) {
-            try {
-                throw new IncorrectAmountException();
-            } catch (IncorrectAmountException e) {
-                e.printStackTrace();
-                return new ATMResponseDTO("Transaction denied", null);
-
-            }
+            throw new IncorrectAmountException();
         } else if (!atmMachine.isAvailable(amount)) {
-            try {
-                throw new NotEnoughMoneyException();
-            } catch (NotEnoughMoneyException e) {
-                e.printStackTrace();
-                return new ATMResponseDTO("Transaction denied", null);
-
-            }
+            throw new NotEnoughMoneyException();
         }
         TreeMap<Integer, Integer> billsReturned = new TreeMap<>();
         int nrOfBills = 0, typeOfBills;
@@ -58,15 +48,8 @@ public class CashWithdrawal {
                 }
             }
             // when the split into bills cannot be done
-            // Obs! It hardly gets here
             if (nrOfBills == 0) {
-                try {
-                    throw new ImpossibleSplitException();
-                } catch (ImpossibleSplitException e) {
-                    e.printStackTrace();
-                    return new ATMResponseDTO("Transaction denied", null);
-
-                }
+                throw new ImpossibleSplitException();
             }
             if (atmMachine.verifyBalance() != null) {
                 updateMailList(atmMachine.verifyBalance());
@@ -74,7 +57,7 @@ public class CashWithdrawal {
 
         }
 
-        return new ATMResponseDTO("Transaction approved", ATMResponseDTO.transformBillsToString(billsReturned));
+        return new ATMResponseDTO(Status.ACCEPTED, "Transaction approved", ATMResponseDTO.transformBillsToString(billsReturned));
     }
 
     public void updateMailList(ArrayList<MailNotification> mails) {
@@ -86,11 +69,4 @@ public class CashWithdrawal {
         return amount > 0;
     }
 
-    public int getBalance() {
-        return atmMachine.calculateBalance();
-    }
-
-    public void refillATM() {
-        atmMachine.fillATM();
-    }
 }

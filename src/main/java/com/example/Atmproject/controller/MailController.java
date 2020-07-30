@@ -1,6 +1,6 @@
 package com.example.Atmproject.controller;
 
-import com.example.Atmproject.CashWithdrawal;
+import com.example.Atmproject.service.CashWithdrawalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MailController {
     @Autowired
-    CashWithdrawal cashWithdrawal;
+    private CashWithdrawalService cashWithdrawalService;
 
     @GetMapping("/api/atm-inbox")
     public String showMails() {
-        return cashWithdrawal.getMailList().toString();
+        return cashWithdrawalService.getMailList().toString();
     }
 }

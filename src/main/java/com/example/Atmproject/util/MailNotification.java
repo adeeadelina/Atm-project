@@ -1,4 +1,4 @@
-package com.example.Atmproject;
+package com.example.Atmproject.util;
 
 public class MailNotification {
     private final String messageToSend;
@@ -11,7 +11,7 @@ public class MailNotification {
         return messageToSend;
     }
 
-//    public String toString() {
-//        return "ATM machine" + "\n" + "To: fillMeUpPlease@superbancomat.com" + "\n" + messageToSend;
-//    }
+    public String toString() {
+        return messageToSend;
+    }
 }
