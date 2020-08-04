@@ -1,6 +1,7 @@
 package com.example.Atmproject;
 
 import com.example.Atmproject.dto.ATMResponseDTO;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import java.util.TreeMap;
@@ -13,7 +14,7 @@ public class IntegrationTests {
 
 
     @Test
-    public void idServerUp() {
+    public void isServerUp() {
         given().when().get("http://localhost:8080/api/online").then().statusCode(200);
     }
     @Test
@@ -60,10 +61,9 @@ public class IntegrationTests {
         assertEquals( expectedTreeMap, actualResponse.getBills());
         expectedTreeMap.clear();
 
-        actualResponse = get("/api/new-transaction?sum=7000").as(ATMResponseDTO.class);
-        expectedTreeMap.put("ONEHUNDRED_RON(100)", 70);
-        assertEquals("Transaction approved", actualResponse.getResponseMessage());
-        assertEquals( expectedTreeMap, actualResponse.getBills());
+        // no connection to other servers-> not enough money exception
+        int statusCode = get("/api/new-transaction?sum=7000").getStatusCode();
+        assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, statusCode);
 
     }
 }
