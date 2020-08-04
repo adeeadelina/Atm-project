@@ -23,6 +23,13 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
         return mailList;
     }
 
+    public CashWithdrawalServiceImpl(ATMService atmService) {
+        this.atmMachine = atmService;
+    }
+
+    public ATMService getAtmMachine() {
+        return atmMachine;
+    }
     public ATMResponseDTO withdraw(int amount) throws IncorrectAmountException, NotEnoughMoneyException, ImpossibleSplitException {
         if (!isAmountCorrect(amount)) {
             throw new IncorrectAmountException();

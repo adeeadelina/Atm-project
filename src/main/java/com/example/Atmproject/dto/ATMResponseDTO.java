@@ -1,13 +1,15 @@
 package com.example.Atmproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
 public class ATMResponseDTO {
 
-    private final TreeMap<String, Integer> bills;
-    private final String responseMessage;
+    private TreeMap<String, Integer> bills;
+    private String responseMessage;
 
     public ATMResponseDTO(String responseMessage, TreeMap<String, Integer> bills) {
         this.responseMessage = responseMessage;
@@ -38,6 +40,15 @@ public class ATMResponseDTO {
         } else {
             return "ONEHUNDRED_RON(100)";
         }
+    }
+
+    public void setBills(TreeMap<String, Integer> bills) {
+        this.bills = bills;
+    }
+
+    @JsonProperty("responseMessage")
+    public void setResponseMessage(String message) {
+        responseMessage = message;
     }
 
     public String getResponseMessage() {
