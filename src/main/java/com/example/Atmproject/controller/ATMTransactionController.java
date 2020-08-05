@@ -39,7 +39,7 @@ public class ATMTransactionController {
 
         try {
             ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
-            ResponseEntity<ATMResponseDTO> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+            ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
             TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
             activityHistoryService.addTransaction(transaction);
             return responseEntity;
@@ -48,20 +48,20 @@ public class ATMTransactionController {
         } catch (Exception e1) {
             try {
                 ATMResponseDTO response = dragosClient.cashWithdraw(amount);
-                ResponseEntity<ATMResponseDTO> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+                ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
                 TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
                 activityHistoryService.addTransaction(transaction);
                 return responseEntity;
             } catch (Exception e2) {
                 try {
                     ATMResponseDTO response = dianaClient.cashWithdraw(amount);
-                    ResponseEntity<ATMResponseDTO> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+                    ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
                     TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
                     activityHistoryService.addTransaction(transaction);
                     return responseEntity;
                 } catch (Exception e3) {
                     ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
-                    ResponseEntity<ATMResponseDTO> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+                    ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
                     TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
                     activityHistoryService.addTransaction(transaction);
                     return responseEntity;

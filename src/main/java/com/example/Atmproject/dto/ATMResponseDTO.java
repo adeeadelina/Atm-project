@@ -73,5 +73,8 @@ public class ATMResponseDTO {
         return Objects.hash(responseMessage, bills);
     }
 
+    public String toString() {
+        return "Your bills: " + bills;
+    }
 
 }
