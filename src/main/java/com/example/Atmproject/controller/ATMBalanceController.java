@@ -1,7 +1,7 @@
 package com.example.Atmproject.controller;
 
 import com.example.Atmproject.service.ATMCheckBalance;
-import com.example.Atmproject.service.TransactionHistoryService;
+import com.example.Atmproject.service.ActivityHistoryService;
 import com.example.Atmproject.util.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +16,13 @@ public class ATMBalanceController {
     private ATMCheckBalance atmCheckBalance;
 
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    private ActivityHistoryService activityHistoryService;
 
     @GetMapping("/api/check-balance")
     public ResponseEntity<String> checkBalance(RequestEntity<String> request) {
         ResponseEntity<String> response = new ResponseEntity<>("Your balance is: " + atmCheckBalance.calculateBalance(), HttpStatus.OK);
         TransactionEntity transaction = new TransactionEntity("non-transaction", request, response);
-        transactionHistoryService.addTransaction(transaction);
+        activityHistoryService.addTransaction(transaction);
         return response;
     }
 }

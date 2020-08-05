@@ -1,6 +1,6 @@
 package com.example.Atmproject.controller;
 
-import com.example.Atmproject.service.TransactionHistoryService;
+import com.example.Atmproject.service.ActivityHistoryService;
 import com.example.Atmproject.util.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AvailableController {
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    private ActivityHistoryService activityHistoryService;
 
     @GetMapping("/api/online")
     public ResponseEntity<String> availableResponse(RequestEntity<String> request) {
         try {
             ResponseEntity<String> response = new ResponseEntity<>("OK", HttpStatus.OK);
             TransactionEntity transaction = new TransactionEntity("non-transaction", request, response);
-            transactionHistoryService.addTransaction(transaction);
+            activityHistoryService.addTransaction(transaction);
             return response;
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

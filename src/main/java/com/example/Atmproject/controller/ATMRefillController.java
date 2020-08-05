@@ -1,7 +1,7 @@
 package com.example.Atmproject.controller;
 
 import com.example.Atmproject.service.ATMRefillService;
-import com.example.Atmproject.service.TransactionHistoryService;
+import com.example.Atmproject.service.ActivityHistoryService;
 import com.example.Atmproject.util.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +16,14 @@ public class ATMRefillController {
     private ATMRefillService atmRefillService;
 
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    private ActivityHistoryService activityHistoryService;
 
     @GetMapping("/api/atm-refill")
     public ResponseEntity<String> refillATM(RequestEntity<String> request) {
         atmRefillService.refillATM();
         ResponseEntity<String> response = new ResponseEntity<>("ATM successfully refilled!", HttpStatus.OK);
         TransactionEntity transaction = new TransactionEntity("non-transaction", request, response);
-        transactionHistoryService.addTransaction(transaction);
+        activityHistoryService.addTransaction(transaction);
         return response;
     }
 }

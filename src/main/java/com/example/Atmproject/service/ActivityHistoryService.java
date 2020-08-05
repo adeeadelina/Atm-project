@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.TreeSet;
 
 @Service
-public class TransactionHistoryService {
+public class ActivityHistoryService {
     private TreeSet<TransactionEntity> transactions;
 
-    public TransactionHistoryService() {
+    public ActivityHistoryService() {
         transactions = new TreeSet<>((o1, o2) -> o2.compareTo(o1));
     }
 
