@@ -1,5 +1,7 @@
 package com.example.Atmproject;
 
+import com.example.Atmproject.pdf.PDFGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -14,9 +16,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class AtmProjectApplication {
 
+    @Autowired
+    private static PDFGenerator pdfGenerator;
+
+//    @Bean
+//    public void closePDF() {
+//        pdfGenerator.closePDF();
+//    }
+
     public static void main(String[] args) {
         SpringApplication.run(AtmProjectApplication.class, args);
     }
+
 
     @Bean
     public Docket productApi() {
