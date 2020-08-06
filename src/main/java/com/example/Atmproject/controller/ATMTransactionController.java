@@ -8,6 +8,8 @@ import com.example.Atmproject.exception.IncorrectAmountException;
 import com.example.Atmproject.exception.NotEnoughMoneyException;
 import com.example.Atmproject.service.ActivityHistoryService;
 import com.example.Atmproject.service.CashWithdrawalService;
+import com.example.Atmproject.service.TransactionHistoryService;
+import com.example.Atmproject.util.ActivityEntity;
 import com.example.Atmproject.util.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ATMTransactionController {
+    @Autowired
+    private TransactionHistoryService transactionHistoryService;
+
     @Autowired
     private ActivityHistoryService activityHistoryService;
 
@@ -40,8 +45,10 @@ public class ATMTransactionController {
         try {
             ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
             ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-            TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
-            activityHistoryService.addTransaction(transaction);
+            ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
+            activityHistoryService.addActivity(activity);
+            TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
+            transactionHistoryService.addTransaction(transaction);
             return responseEntity;
         } catch (IncorrectAmountException incorrectAmountException) {
             throw new IncorrectAmountException();
@@ -49,21 +56,27 @@ public class ATMTransactionController {
             try {
                 ATMResponseDTO response = dragosClient.cashWithdraw(amount);
                 ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
-                activityHistoryService.addTransaction(transaction);
+                ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
+                activityHistoryService.addActivity(activity);
+                TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
+                transactionHistoryService.addTransaction(transaction);
                 return responseEntity;
             } catch (Exception e2) {
                 try {
                     ATMResponseDTO response = dianaClient.cashWithdraw(amount);
                     ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                    TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
-                    activityHistoryService.addTransaction(transaction);
+                    ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
+                    activityHistoryService.addActivity(activity);
+                    TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
+                    transactionHistoryService.addTransaction(transaction);
                     return responseEntity;
                 } catch (Exception e3) {
                     ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
                     ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                    TransactionEntity transaction = new TransactionEntity("transaction", request, responseEntity);
-                    activityHistoryService.addTransaction(transaction);
+                    ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
+                    activityHistoryService.addActivity(activity);
+                    TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
+                    transactionHistoryService.addTransaction(transaction);
                     return responseEntity;
                 }
             }

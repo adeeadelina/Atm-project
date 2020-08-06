@@ -1,6 +1,6 @@
 package com.example.Atmproject.service;
 
-import com.example.Atmproject.util.TransactionEntity;
+import com.example.Atmproject.util.ActivityEntity;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import org.springframework.stereotype.Service;
@@ -10,21 +10,21 @@ import java.util.TreeSet;
 
 @Service
 public class ActivityHistoryService {
-    private TreeSet<TransactionEntity> transactions;
+    private TreeSet<ActivityEntity> activities;
 
     public ActivityHistoryService() {
-        transactions = new TreeSet<>((o1, o2) -> o2.compareTo(o1));
+        activities = new TreeSet<>((o1, o2) -> o2.compareTo(o1));
     }
 
-    public TreeSet<TransactionEntity> getTransactions() {
-        return transactions;
+    public TreeSet<ActivityEntity> getActivities() {
+        return activities;
     }
 
-    public void addTransaction(TransactionEntity transaction) {
-        transactions.add(transaction);
+    public void addActivity(ActivityEntity activity) {
+        activities.add(activity);
     }
 
-    public Table createTableRow(TransactionEntity entity) {
+    public Table createTableRow(ActivityEntity entity) {
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 
@@ -35,12 +35,13 @@ public class ActivityHistoryService {
         return table;
     }
 
+    // TODO cod duplicat, find another way
     public Table createFilteredTable(int mins) {
 
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 
-        for (TransactionEntity entity : transactions) {
+        for (ActivityEntity entity : activities) {
             if(entity.getTime().isAfter(LocalDateTime.now().minusMinutes(mins))) {
                 table.addCell(new Cell().add(entity.getTimeFormatPDF()));
                 if (entity.getType().equals("transaction")) {
@@ -60,7 +61,7 @@ public class ActivityHistoryService {
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 
-        for (TransactionEntity entity : transactions) {
+        for (ActivityEntity entity : activities) {
             table.addCell(new Cell().add(entity.getTimeFormatPDF()));
             if (entity.getType().equals("transaction")) {
                 table.addCell(new Cell().add(entity.getTransactionRequestFormatPDF()));

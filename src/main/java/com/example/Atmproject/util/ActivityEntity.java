@@ -1,29 +1,37 @@
 package com.example.Atmproject.util;
 
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class TransactionEntity {
+public class ActivityEntity {
     private final LocalDateTime time;
-    private final int sum;
+
+    // "transaction" / "non-transaction"
+    private final String type;
+    private final RequestEntity<?> request;
     private final ResponseEntity<?> response;
 
-    public TransactionEntity(int sum, ResponseEntity<?> response) {
+    public ActivityEntity(String type, RequestEntity<?> request, ResponseEntity<?> response) {
         this.time = LocalDateTime.now();
-        this.sum = sum;
+        this.type = type;
+        this.request = request;
         this.response = response;
     }
 
+    public String getType() {
+        return type;
+    }
 
     public LocalDateTime getTime() {
         return time;
     }
 
-    public int getSum() {
-        return sum;
+    public RequestEntity<?> getRequest() {
+        return request;
     }
 
     public ResponseEntity<?> getResponse() {
@@ -35,18 +43,27 @@ public class TransactionEntity {
     }
 
     public String getRequestFormatPDF() {
-        return "Sum: " + sum;
+        return request.getMethod() + " : " + request.getUrl();
+    }
+
+    public String getTransactionRequestFormatPDF() {
+        return request.getMethod() + " : " + request.getUrl();
     }
 
     public String getResponseFormatPDF() {
-        return response.getStatusCodeValue() + " : " +  Objects.requireNonNull(response.getBody()).toString();
+        return response.getStatusCodeValue() + " : " + response.getBody();
     }
+
+    public String getTransactionResponseFormatPDF() {
+        return response.getStatusCodeValue() + " : " + Objects.requireNonNull(response.getBody()).toString();
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransactionEntity that = (TransactionEntity) o;
+        ActivityEntity that = (ActivityEntity) o;
         return time.equals(that.time);
     }
 
@@ -55,7 +72,7 @@ public class TransactionEntity {
         return Objects.hash(time);
     }
 
-    public int compareTo(TransactionEntity o1) {
+    public int compareTo(ActivityEntity o1) {
         if (this.equals(o1)) {
             return 0;
         } else if (this.time.isAfter(o1.time)) {
