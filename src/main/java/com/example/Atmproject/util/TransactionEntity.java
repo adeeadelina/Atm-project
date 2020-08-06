@@ -47,21 +47,23 @@ public class TransactionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionEntity that = (TransactionEntity) o;
-        return time.equals(that.time);
+        return sum == that.sum &&
+                time.equals(that.time) &&
+                response.equals(that.response);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time);
+        return Objects.hash(time, sum, response);
     }
 
     public int compareTo(TransactionEntity o1) {
-        if (this.equals(o1)) {
-            return 0;
-        } else if (this.time.isAfter(o1.time)) {
+        if (this.time.isAfter(o1.time)) {
             return 1;
-        } else {
+        } else if(this.time.isBefore(o1.time)){
             return -1;
+        } else {
+            return 0;
         }
     }
 }

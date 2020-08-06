@@ -58,27 +58,29 @@ public class ActivityEntity {
         return response.getStatusCodeValue() + " : " + Objects.requireNonNull(response.getBody()).toString();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActivityEntity that = (ActivityEntity) o;
-        return time.equals(that.time);
+        return time.equals(that.time) &&
+                type.equals(that.type) &&
+                request.equals(that.request) &&
+                response.equals(that.response);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time);
+        return Objects.hash(time, type, request, response);
     }
 
     public int compareTo(ActivityEntity o1) {
-        if (this.equals(o1)) {
-            return 0;
-        } else if (this.time.isAfter(o1.time)) {
+        if (this.time.isAfter(o1.time)) {
             return 1;
-        } else {
+        } else if(this.time.isBefore(o1.time)){
             return -1;
+        } else {
+            return 0;
         }
     }
 }
