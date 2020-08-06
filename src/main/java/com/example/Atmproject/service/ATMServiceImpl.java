@@ -11,11 +11,12 @@ import java.util.Objects;
 @Service
 public class ATMServiceImpl implements ATMService {
     @Autowired
-    private ATMCheckBalance atmCheckBalance;
+    private final ATMCheckBalance atmCheckBalance;
 
     // key - type of bill, value - how many bills of that type
-    public ATMServiceImpl() {
+    public ATMServiceImpl(ATMCheckBalance atmCheckBalance) {
         this.fillATM();
+        this.atmCheckBalance = atmCheckBalance;
     }
 
     public void fillATM() {
