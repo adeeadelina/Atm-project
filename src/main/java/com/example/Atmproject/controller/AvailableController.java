@@ -1,6 +1,6 @@
 package com.example.Atmproject.controller;
 
-import com.example.Atmproject.service.ActivityHistoryService;
+import com.example.Atmproject.service.ActivityHistoryServiceImpl;
 import com.example.Atmproject.util.ActivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AvailableController {
     @Autowired
-    private ActivityHistoryService activityHistoryService;
+    private ActivityHistoryServiceImpl activityHistoryService;
 
     @GetMapping("/api/online")
     public ResponseEntity<String> availableResponse(RequestEntity<String> request) {

@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.TreeSet;
 
 @Service
-public class ActivityHistoryService {
+public class ActivityHistoryServiceImpl implements HistoryService {
     private TreeSet<ActivityEntity> activities;
 
-    public ActivityHistoryService() {
+    public ActivityHistoryServiceImpl() {
         activities = new TreeSet<>((o1, o2) -> o2.compareTo(o1));
     }
 
@@ -22,17 +22,6 @@ public class ActivityHistoryService {
 
     public void addActivity(ActivityEntity activity) {
         activities.add(activity);
-    }
-
-    public Table createTableRow(ActivityEntity entity) {
-        float[] pointColumnWidths = {140F, 200F, 200F};
-        Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
-
-        table.addCell(new Cell().add(entity.getTimeFormatPDF()));
-        table.addCell(new Cell().add(entity.getRequestFormatPDF()));
-        table.addCell(new Cell().add(entity.getResponseFormatPDF()));
-
-        return table;
     }
 
     // TODO cod duplicat, find another way
@@ -57,7 +46,7 @@ public class ActivityHistoryService {
         return table;
     }
 
-    public Table createTransactionsTable() {
+    public Table createTable() {
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 

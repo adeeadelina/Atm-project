@@ -1,7 +1,7 @@
 package com.example.Atmproject.controller;
 
 import com.example.Atmproject.pdf.PDFGenerator;
-import com.example.Atmproject.service.ActivityHistoryService;
+import com.example.Atmproject.service.ActivityHistoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReportController {
     @Autowired
-    private ActivityHistoryService activityHistoryService;
+    private ActivityHistoryServiceImpl activityHistoryService;
 
     @GetMapping("/api/report")
     public ResponseEntity<String> getReport() throws Exception {
-        PDFGenerator pdfGenerator = new PDFGenerator(activityHistoryService.createTransactionsTable());
+        PDFGenerator pdfGenerator = new PDFGenerator(activityHistoryService.createTable());
         return new ResponseEntity<>("Report successfully created!", HttpStatus.OK);
     }
 

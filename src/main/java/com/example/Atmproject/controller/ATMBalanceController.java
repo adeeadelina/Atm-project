@@ -1,7 +1,7 @@
 package com.example.Atmproject.controller;
 
 import com.example.Atmproject.service.ATMCheckBalance;
-import com.example.Atmproject.service.ActivityHistoryService;
+import com.example.Atmproject.service.ActivityHistoryServiceImpl;
 import com.example.Atmproject.util.ActivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class ATMBalanceController {
     private ATMCheckBalance atmCheckBalance;
 
     @Autowired
-    private ActivityHistoryService activityHistoryService;
+    private ActivityHistoryServiceImpl activityHistoryService;
 
     @GetMapping("/api/check-balance")
     public ResponseEntity<String> checkBalance(RequestEntity<String> request) {

@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.TreeSet;
 
 @Service
-public class TransactionHistoryService {
-    private TreeSet<TransactionEntity> transactions;
+public class TransactionHistoryServiceImpl implements HistoryService {
+    private final TreeSet<TransactionEntity> transactions;
 
-    public TransactionHistoryService() {
+    public TransactionHistoryServiceImpl() {
         transactions = new TreeSet<>((o1, o2) -> o2.compareTo(o1));
     }
 
@@ -41,7 +41,7 @@ public class TransactionHistoryService {
         return table;
     }
 
-    public Table createTransactionsTable() {
+    public Table createTable() {
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 

@@ -6,9 +6,9 @@ import com.example.Atmproject.dto.ATMResponseDTO;
 import com.example.Atmproject.exception.ImpossibleSplitException;
 import com.example.Atmproject.exception.IncorrectAmountException;
 import com.example.Atmproject.exception.NotEnoughMoneyException;
-import com.example.Atmproject.service.ActivityHistoryService;
+import com.example.Atmproject.service.ActivityHistoryServiceImpl;
 import com.example.Atmproject.service.CashWithdrawalService;
-import com.example.Atmproject.service.TransactionHistoryService;
+import com.example.Atmproject.service.TransactionHistoryServiceImpl;
 import com.example.Atmproject.util.ActivityEntity;
 import com.example.Atmproject.util.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ATMTransactionController {
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    private TransactionHistoryServiceImpl transactionHistoryService;
 
     @Autowired
-    private ActivityHistoryService activityHistoryService;
+    private ActivityHistoryServiceImpl activityHistoryService;
 
     @Autowired
     private CashWithdrawalService cashWithdrawalService;
