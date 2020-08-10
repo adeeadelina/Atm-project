@@ -16,13 +16,13 @@ public class TransactionsReportController {
 
     @GetMapping("/api/report/transactions")
     public ResponseEntity<String> getReport() throws Exception {
-        PDFGenerator pdfGenerator = new PDFGenerator(transactionHistoryService.createTable());
+        PDFGenerator pdfGenerator = new PDFGenerator("report", transactionHistoryService.createTable());
         return new ResponseEntity<>("Report successfully created!", HttpStatus.OK);
     }
 
     @GetMapping("/api/report/transactions/{mins}")
     public ResponseEntity<String> getReportByTime(@PathVariable("mins") int mins) throws Exception {
-        PDFGenerator pdfGenerator = new PDFGenerator((transactionHistoryService.createFilteredTable(mins)));
+        PDFGenerator pdfGenerator = new PDFGenerator("report", transactionHistoryService.createFilteredTable(mins));
         return new ResponseEntity<>("Report successfully created!", HttpStatus.OK);
     }
 }

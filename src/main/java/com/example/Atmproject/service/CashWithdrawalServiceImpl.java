@@ -50,7 +50,7 @@ public class CashWithdrawalServiceImpl implements CashWithdrawalService {
                     if (nrOfBills != 0) {
                         billsReturned.put(typeOfBills, nrOfBills);
                     }
-                    atmMachine.updateBalance(nrOfBills, typeOfBills);
+                    atmMachine.updateBalance("-", nrOfBills, typeOfBills);
                 }
             }
             // when the split into bills cannot be done

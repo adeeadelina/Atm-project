@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "dianaClient", url = "${diana.atm}")
 public interface DianaClient extends ATMClient {
+
     @GetMapping("/api/new-transaction")
     ATMResponseDTO cashWithdraw(@RequestParam(value = "sum", defaultValue = "0") int sum);
 

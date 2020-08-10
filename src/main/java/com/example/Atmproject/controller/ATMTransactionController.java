@@ -43,45 +43,31 @@ public class ATMTransactionController {
             throws IncorrectAmountException, ImpossibleSplitException, NotEnoughMoneyException {
 
         try {
-            ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
-            ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-            ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
-            activityHistoryService.addActivity(activity);
-            TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
-            transactionHistoryService.addTransaction(transaction);
-            return responseEntity;
+            return createResponse(amount, request, cashWithdrawalService.withdraw(amount));
         } catch (IncorrectAmountException incorrectAmountException) {
             throw new IncorrectAmountException();
         } catch (Exception e1) {
             try {
-                ATMResponseDTO response = dragosClient.cashWithdraw(amount);
-                ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
-                activityHistoryService.addActivity(activity);
-                TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
-                transactionHistoryService.addTransaction(transaction);
-                return responseEntity;
+                return createResponse(amount, request, dianaClient.cashWithdraw(amount));
             } catch (Exception e2) {
                 try {
-                    ATMResponseDTO response = dianaClient.cashWithdraw(amount);
-                    ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                    ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
-                    activityHistoryService.addActivity(activity);
-                    TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
-                    transactionHistoryService.addTransaction(transaction);
-                    return responseEntity;
+                    return createResponse(amount, request, dragosClient.cashWithdraw(amount));
+
                 } catch (Exception e3) {
-                    ATMResponseDTO response = cashWithdrawalService.withdraw(amount);
-                    ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(response);
-                    ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
-                    activityHistoryService.addActivity(activity);
-                    TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
-                    transactionHistoryService.addTransaction(transaction);
-                    return responseEntity;
+                    return createResponse(amount, request, cashWithdrawalService.withdraw(amount));
                 }
             }
         }
 
+    }
+
+    public ResponseEntity<ATMResponseDTO> createResponse(int amount, RequestEntity<String> request, ATMResponseDTO atmResponseDTO) {
+        ResponseEntity<ATMResponseDTO> responseEntity = ResponseEntity.status(HttpStatus.OK).body(atmResponseDTO);
+        ActivityEntity activity = new ActivityEntity("transaction", request, responseEntity);
+        activityHistoryService.addActivity(activity);
+        TransactionEntity transaction = new TransactionEntity(amount, responseEntity);
+        transactionHistoryService.addTransaction(transaction);
+        return responseEntity;
     }
 
     @RequestMapping("/")

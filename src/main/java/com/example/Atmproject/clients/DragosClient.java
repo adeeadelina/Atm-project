@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "dragosClient", url = "${dragos.atm}")
 public interface DragosClient extends ATMClient {
+
     @GetMapping("/api/new-transaction")
     ATMResponseDTO cashWithdraw(@RequestParam(value = "sum", defaultValue = "0") int sum);
 

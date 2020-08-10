@@ -63,9 +63,7 @@ public class ActivityEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActivityEntity that = (ActivityEntity) o;
-        return time.equals(that.time) &&
-                type.equals(that.type) &&
-                request.equals(that.request) &&
+        return type.equals(that.type) &&
                 response.equals(that.response);
     }
 

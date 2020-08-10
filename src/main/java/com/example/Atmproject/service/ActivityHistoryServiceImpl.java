@@ -24,43 +24,40 @@ public class ActivityHistoryServiceImpl implements HistoryService {
         activities.add(activity);
     }
 
-    // TODO cod duplicat, find another way
     public Table createFilteredTable(int mins) {
 
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 
         for (ActivityEntity entity : activities) {
-            if(entity.getTime().isAfter(LocalDateTime.now().minusMinutes(mins))) {
-                table.addCell(new Cell().add(entity.getTimeFormatPDF()));
-                if (entity.getType().equals("transaction")) {
-                    table.addCell(new Cell().add(entity.getTransactionRequestFormatPDF()));
-                    table.addCell(new Cell().add(entity.getTransactionResponseFormatPDF()));
-                } else {
-                    table.addCell(new Cell().add(entity.getRequestFormatPDF()));
-                    table.addCell(new Cell().add(entity.getResponseFormatPDF()));
-                }
+            if (entity.getTime().isAfter(LocalDateTime.now().minusMinutes(mins))) {
+                createTableAux(table, entity);
             }
         }
 
         return table;
     }
 
+
     public Table createTable() {
         float[] pointColumnWidths = {140F, 200F, 200F};
         Table table = new com.itextpdf.layout.element.Table(pointColumnWidths);
 
         for (ActivityEntity entity : activities) {
-            table.addCell(new Cell().add(entity.getTimeFormatPDF()));
-            if (entity.getType().equals("transaction")) {
-                table.addCell(new Cell().add(entity.getTransactionRequestFormatPDF()));
-                table.addCell(new Cell().add(entity.getTransactionResponseFormatPDF()));
-            } else {
-                table.addCell(new Cell().add(entity.getRequestFormatPDF()));
-                table.addCell(new Cell().add(entity.getResponseFormatPDF()));
-            }
+            createTableAux(table, entity);
         }
 
         return table;
+    }
+
+    private void createTableAux(Table table, ActivityEntity entity) {
+        table.addCell(new Cell().add(entity.getTimeFormatPDF()));
+        if (entity.getType().equals("transaction")) {
+            table.addCell(new Cell().add(entity.getTransactionRequestFormatPDF()));
+            table.addCell(new Cell().add(entity.getTransactionResponseFormatPDF()));
+        } else {
+            table.addCell(new Cell().add(entity.getRequestFormatPDF()));
+            table.addCell(new Cell().add(entity.getResponseFormatPDF()));
+        }
     }
 }

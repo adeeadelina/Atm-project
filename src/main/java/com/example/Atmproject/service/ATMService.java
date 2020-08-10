@@ -13,7 +13,7 @@ public interface ATMService {
 
     void fillATM();
 
-    void updateBalance(int nrOfBills, int typeOfBills);
+    void updateBalance(String operation, int nrOfBills, int typeOfBills);
 
     ArrayList<MailNotification> verifyBalance();
 

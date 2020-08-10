@@ -1,12 +1,20 @@
 package com.example.Atmproject.dto;
 
+import com.example.Atmproject.service.ActivityHistoryServiceImpl;
+import com.example.Atmproject.service.TransactionHistoryServiceImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
 public class ATMResponseDTO {
+    @Autowired
+    ActivityHistoryServiceImpl activityHistoryService;
+
+    @Autowired
+    TransactionHistoryServiceImpl transactionHistoryService;
 
     private TreeMap<String, Integer> bills;
     private String responseMessage;
@@ -76,5 +84,6 @@ public class ATMResponseDTO {
     public String toString() {
         return "Your bills: " + bills;
     }
+
 
 }

@@ -31,8 +31,12 @@ public class ATMServiceImpl implements ATMService {
         return amount <= atmCheckBalance.calculateBalance();
     }
 
-    public void updateBalance(int nrOfBills, int typeOfBills) {
-        balance.put(typeOfBills, balance.get(typeOfBills) - nrOfBills);
+    public void updateBalance(String operation, int nrOfBills, int typeOfBills) {
+        if(operation.equals("-")) {
+            balance.put(typeOfBills, balance.get(typeOfBills) - nrOfBills);
+        } else {
+            balance.put(typeOfBills, balance.get(typeOfBills) + nrOfBills);
+        }
 
     }
 

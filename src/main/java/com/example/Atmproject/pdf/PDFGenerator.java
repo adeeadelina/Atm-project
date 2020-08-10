@@ -8,10 +8,11 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 
 public class PDFGenerator {
-    private Document document;
-    private PdfDocument pdfDocument;
+    private final Document document;
+    private final PdfDocument pdfDocument;
 
-    public PDFGenerator(Table table) throws Exception {
+    // type -> report/ mail
+    public PDFGenerator(String type, Table table) throws Exception {
         String dest = "sample.pdf";
         PdfWriter writer = new PdfWriter(dest);
 
@@ -21,19 +22,13 @@ public class PDFGenerator {
 
         document = new Document(pdfDocument);
 
-        Paragraph paragraph = new Paragraph("Here is your history:");
-        document.add(paragraph);
+        if(type.equals("report")) {
+            Table tableNew = createHistoryTable();
+            document.add(tableNew);
+        }
 
-        float [] pointColumnWidths = {140F, 200F, 200F};
-        Table tableNew = new Table(pointColumnWidths);
-        tableNew.addCell(new Cell().add("Time"));
-        tableNew.addCell(new Cell().add("Request"));
-        tableNew.addCell(new Cell().add("Response"));
-
-
-        document.add(tableNew);
         document.add(table);
-        document.close();
+        closePDF();
     }
 
     public Document getDocument() {
@@ -44,7 +39,16 @@ public class PDFGenerator {
         document.close();
     }
 
-    public void addTable(Table table) {
-        document.add(table);
+    public Table createHistoryTable() {
+        Paragraph paragraph = new Paragraph("Here is your history:");
+        document.add(paragraph);
+
+        float[] pointColumnWidths = {140F, 200F, 200F};
+        Table table = new Table(pointColumnWidths);
+        table.addCell(new Cell().add("Time"));
+        table.addCell(new Cell().add("Request"));
+        table.addCell(new Cell().add("Response"));
+
+        return table;
     }
 }

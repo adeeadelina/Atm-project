@@ -15,7 +15,7 @@ import java.util.Map;
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IncorrectAmountException.class)
     public ResponseEntity<Object> handleIncorrectAmountException(Exception exception) {
-        Map<String,Object> body = new LinkedHashMap<>();
+        Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         body.put("message", exception.getMessage());
 
@@ -24,7 +24,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotEnoughMoneyException.class)
     public ResponseEntity<Object> handleNotEnoughMoneyException(Exception exception) {
-        Map<String,Object> body = new LinkedHashMap<>();
+        Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", exception.getMessage());
 
@@ -33,7 +33,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ImpossibleSplitException.class)
     public ResponseEntity<Object> handleImpossibleSplitException(Exception exception) {
-        Map<String,Object> body = new LinkedHashMap<>();
+        Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", exception.getMessage());
 
